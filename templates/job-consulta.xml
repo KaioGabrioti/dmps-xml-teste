@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-specification xmlns="http://com.fico/dmip/jobsAndJobsSteps" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xsi:schemaLocation="http://com.fico/dmip/jobsAndJobsSteps SampleMergedJobTemplate.xsd">
+    <diagram-state>
+    </diagram-state>
+    <job-specification-version>
+        <version>1.0</version>
+        <dmip-version-since>1.0</dmip-version-since>
+        <organization>FICO</organization>
+    </job-specification-version>
+    <name>calculoacoespreventivasv1</name>
+    <description>teste example</description>
+    <job-params>
+        <parameter>
+            <name>dmip.non.tx.job.acker.enforced</name>
+            <value>false</value>
+        </parameter>
+            <name>dmip.state.qos.consistency</name>
+            <value>true</value>
+        <parameter>
+        </parameter>
+            <name>dmip.state.qos.persistency</name>
+            <value>Delayed</value>
+        <parameter>
+        </parameter>
+            <name>dmip.visualization.store.rolling.unit</name>
+            <value>Day</value>
+        <parameter>
+            <name>dmip.visualization.store.auto.cleanup.interval</name>
+            <value>1</value>
+        </parameter>
+    </job-params>
+    <tags>
+        <tag>
+            <name>GAR</name>
+        </tag>
+    </tags>
+    <job-steps>
+        <job-step parallelism-hint="5" processing-iteration-count="1" xsi:type="topic-inbound-job-step">
+            <description>descricao do job step topic inbound</description>
+            <job-step-id>apoiocalculoreducaoin</job-step-id>
+            <job-step-version>
+                <version>1.0</version>
+                <dmip-version-since>1.0</dmip-version-since>
+                <organization>FICO</organization>
+            </job-step-version>
+            <configuration>
+                <job-step-params xsi:type="topic-inbound-job-step-params">
+                    <topic-name>apoiocalculoreducaoin</topic-name>
+                    <retention-period>30</retention-period>
+                    <time-unit>MINUTES</time-unit>
+                </job-step-params>
+                <processing-units>
+                    <processing-unit>
+                        <generated-fields>
+                            <generated-field xsi:type="topic-inbound-js-generated-field">
+                                <output-stream-id>s-entrada</output-stream-id>
+                                <name>field-data</name>
+                                <output-field>
+                                    <name>message</name>
+                                    <data-type>string</data-type>
+                                </output-field>
+                            </generated-field>
+                        </generated-fields>
+                    </processing-unit>
+                </processing-units>
+            </configuration>
+            <job-step-links>
+                <out-stream>
+                    <stream-id>s-entrada</stream-id>
+                    <output-fields>
+                        <field data-type="string" keep="true">message</field>
+                    </output-fields>
+                    <stream-consumers>
+                        <stream-consumer>
+                            <consuming-job-step-id>extrai-traceid</consuming-job-step-id>
+                            <grouping-by>SHUFFLE</grouping-by>
+                        </stream-consumer>
+                    </stream-consumers>
+                </out-stream>
+            </job-step-links>
+            <step-type>INBOUND</step-type>
+            <tuple-processing-type>FULL</tuple-processing-type>
+            <job-step-builder-class>com.fico.dmip.injobstep.topic.TopicInboundStrategyBuilder</job-step-builder-class>
+            <schedulable>false</schedulable>
+            <requires-data-source>true</requires-data-source>
+        <job-step>
+    </job-steps>
+</job-specification>
+
